@@ -1,0 +1,19 @@
+{
+   "name": "cedricgourville_6_05082021",
+   "version": "1.0.0",
+   "description": "OC P6",
+   "main": "index.js",
+   "scripts": {
+      "start-front": "cd frontend && npm run start:linux:darwin"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/KirdesMF/CedricGourville_6_05082021.git"
+   },
+   "author": "KirdesMF",
+   "license": "ISC",
+   "bugs": {
+      "url": "https://github.com/KirdesMF/CedricGourville_6_05082021/issues"
+   },
+   "homepage": "https://github.com/KirdesMF/CedricGourville_6_05082021#readme"
+}
