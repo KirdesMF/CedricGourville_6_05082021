@@ -1,7 +1,7 @@
 {
    "scripts": {
-      "open": "open-cli https://localhost:3000",
-      "start:dev": "ts-node-dev --respawn app.ts",
+      "open": "wslview http://localhost:3000",
+      "start:dev": "concurrently \"ts-node-dev --respawn app.ts\" \"npm run open\"",
       "build": "rm -rf dist && tsc",
       "start:prod": "npm run build && node dist/app.js"
    },
@@ -16,12 +16,12 @@
       "@types/node": "^16.4.12",
       "@typescript-eslint/eslint-plugin": "^4.29.0",
       "@typescript-eslint/parser": "^4.29.0",
+      "concurrently": "^6.2.0",
       "eslint": "^7.32.0",
       "eslint-config-standard": "^16.0.3",
       "eslint-plugin-import": "^2.23.4",
       "eslint-plugin-node": "^11.1.0",
       "eslint-plugin-promise": "^5.1.0",
-      "open-cli": "^7.0.0",
       "ts-node": "^10.1.0",
       "ts-node-dev": "^1.1.8",
       "typescript": "^4.3.5"

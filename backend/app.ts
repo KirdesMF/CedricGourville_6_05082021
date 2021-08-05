@@ -30,8 +30,8 @@ const fakeSauce = {
    name: 'fake',
    manufacturer: 'fakeManu',
    description: 'lorem',
-   mainPepper: '',
-   imageUrl: '',
+   mainPepper: 'pepper',
+   imageUrl: 'https://picsum.photos/200/300',
    heat: 2,
    likes: 12,
    dislikes: 20,
@@ -41,4 +41,5 @@ const fakeSauce = {
 app.get('/api/sauces', (req, res) => {
    res.send([fakeSauce]);
 });
+
 app.listen(port, () => console.log(`API hosted: http://localhost:${port}`));
