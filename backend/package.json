@@ -1,8 +1,8 @@
 {
    "scripts": {
       "open": "wslview http://localhost:3000",
-      "start:dev": "ts-node-dev --respawn app.ts",
-      "build": "rm -rf dist && tsc",
+      "start:dev": "rm -rf .cache && NODE_PATH=./ ts-node-dev --transpile-only --cache-directory .cache app.ts --watch",
+      "build": "rm -rf dist && NODE_PATH=./dist tsc",
       "start:prod": "npm run build && node dist/app.js"
    },
    "dependencies": {

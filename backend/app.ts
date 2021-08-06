@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { router } from 'api/routes/fakeRoute';
 
 dotenv.config();
 
@@ -19,27 +20,5 @@ app.use((req, res, next) => {
    next();
 });
 
-app.get('/', (req, res) => res.send('Hello'));
-app.post('/api/auth/login', (req, res) => {
-   console.log(req.params);
-   return res.send({ userId: '', token: '' });
-});
-
-const fakeSauce = {
-   userId: '123',
-   name: 'fake',
-   manufacturer: 'fakeManu',
-   description: 'lorem',
-   mainPepper: 'pepper',
-   imageUrl: 'https://picsum.photos/200/300',
-   heat: 2,
-   likes: 12,
-   dislikes: 20,
-   usersLiked: ['123', '245'],
-   usersDislikes: ['589', '789'],
-};
-app.get('/api/sauces', (req, res) => {
-   res.send([fakeSauce]);
-});
-
+app.use(router);
 app.listen(port, () => console.log(`API hosted: http://localhost:${port}`));
