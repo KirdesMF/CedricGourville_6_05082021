@@ -1,5 +1,5 @@
 import express from 'express';
-import { sauces } from 'controllers/sauces.controller';
+import { sauces } from 'api/controllers/sauces.controller';
 
 const saucesRouter = express.Router();
 

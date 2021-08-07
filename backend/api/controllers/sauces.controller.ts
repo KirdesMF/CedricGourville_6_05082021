@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { fakesSauces } from 'db/sauces.db';
+import { fakesSauces } from 'api/db/sauces.db';
 
 async function getAllSauces(req: Request, res: Response, next: NextFunction) {
    res.send(fakesSauces);
