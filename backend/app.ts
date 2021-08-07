@@ -1,24 +1,16 @@
 import express from 'express';
-import dotenv from 'dotenv';
-import { router } from 'api/routes/fakeRoute';
+import { setHeaders, env } from 'api/config/config';
+import authRouter from 'api/routes/auth.routes';
+import saucesRouter from 'api/routes/sauces.routes';
 
-dotenv.config();
-
-const port = process.env.PORT || 3000;
+const { port } = env;
 const app = express();
 
-app.use((req, res, next) => {
-   res.setHeader('Access-Control-Allow-Origin', '*');
-   res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
-   );
-   res.setHeader(
-      'Access-Control-Allow-Methods',
-      'GET, POST, PUT, DELETE, PATCH, OPTIONS'
-   );
-   next();
-});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(setHeaders);
 
-app.use(router);
+app.use('/api', authRouter);
+app.use('/api', saucesRouter);
+
 app.listen(port, () => console.log(`API hosted: http://localhost:${port}`));
