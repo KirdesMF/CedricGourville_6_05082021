@@ -1,5 +1,5 @@
-import { UserModel } from 'api/db/auth.db';
 import { Request, Response, NextFunction } from 'express';
+import { UserModel } from '@models/auth.model';
 
 async function signup(req: Request, res: Response, next: NextFunction) {
    // const email = req.body.email;
@@ -22,13 +22,12 @@ async function login(req: Request, res: Response, next: NextFunction) {
          const newUser = new UserModel({ name, email, password });
          await newUser.save();
          res.send(newUser);
+         next();
       }
    } catch {
       res.status(404);
       res.send({ error: 'Something went wrong!' });
    }
-
-   next();
 }
 
 export const auth = { signup, login };
