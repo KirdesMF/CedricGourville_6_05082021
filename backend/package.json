@@ -1,9 +1,13 @@
 {
    "scripts": {
-      "start:dev": "rm -rf src/.cache && ts-node-dev --transpile-only --cache-directory src/.cache src/app.ts --watch",
+      "clear:cache": "rm -rf src/.cache",
+      "start:mongo": "mongod",
+      "start:ts": "rm -rf src/.cache && ts-node-dev --transpile-only --cache-directory src/.cache src/app.ts --watch",
+      "start:dev": "concurrently \"npm run start:mongo \" \"sleep 3 && npm run start:ts \"",
       "start:prod": "rm -rf dist && tsc && NODE_ENV=production node dist/app.js"
    },
    "dependencies": {
+      "concurrently": "^6.2.1",
       "dotenv": "^10.0.0",
       "express": "^4.17.1",
       "mongoose": "^5.13.5"
