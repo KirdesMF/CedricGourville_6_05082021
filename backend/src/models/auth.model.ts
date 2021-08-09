@@ -1,13 +1,11 @@
 import { Schema, model } from 'mongoose';
 
-type User = {
-   name?: string;
+export type User = {
    password?: string;
    email?: string;
 };
 
 const userSchema = new Schema<User>({
-   name: String,
    password: String,
    email: String,
 });

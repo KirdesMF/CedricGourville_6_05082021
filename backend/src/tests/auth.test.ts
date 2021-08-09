@@ -1,8 +1,11 @@
 import supertest from 'supertest';
 import { ExpressLoader } from '../loaders/express.loader';
 import { testDatabase } from './db';
+import express from 'express';
 
-const agent = supertest.agent(ExpressLoader());
+const app = express();
+const router = ExpressLoader(app);
+const agent = supertest.agent(router);
 
 beforeAll(async () => await testDatabase.connect());
 beforeEach(async () => await testDatabase.clear());

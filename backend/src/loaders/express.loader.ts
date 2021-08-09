@@ -1,44 +1,17 @@
-import express, {
-   Request,
-   Response,
-   NextFunction,
-   ErrorRequestHandler,
-   Express,
-} from 'express';
+import express, { Express } from 'express';
 import { Route } from '../api/routes/routes';
+import { errorLogger, errorServer } from '../middlewares/errors';
+import { setHeaders } from '../middlewares/headers';
 
-function handleErrors(
-   err: ErrorRequestHandler,
-   req: Request,
-   res: Response,
-   next: NextFunction
-) {
-   res.status(500);
-   res.json({ error: err });
-   next(err);
-}
-
-function setHeaders(req: Request, res: Response, next: NextFunction) {
-   res.setHeader('Access-Control-Allow-Origin', '*');
-   res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'
-   );
-   res.setHeader(
-      'Access-Control-Allow-Methods',
-      'GET, POST, PUT, DELETE, PATCH, OPTIONS'
-   );
-   next();
-}
-
-export async function ExpressLoader(app: Express) {
+export function ExpressLoader(app: Express) {
    app.use(express.json());
    app.use(express.urlencoded({ extended: true }));
    app.use(setHeaders);
 
    app.use('/api', Route());
 
-   app.use(handleErrors);
+   app.use(errorLogger);
+   app.use(errorServer);
 
    return app;
 }

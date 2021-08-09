@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserModel } from '../../models/auth.model';
+import { findUserByEmail, createUser } from '../../services/auth.services';
 
 async function signup(req: Request, res: Response, next: NextFunction) {
    // const email = req.body.email;
@@ -10,23 +10,21 @@ async function signup(req: Request, res: Response, next: NextFunction) {
 }
 
 async function login(req: Request, res: Response, next: NextFunction) {
-   const name = req.body.name || 'Cedric';
    const email = req.body.email || 'cedric@contact.fr';
    const password = req.body.password || '1234';
 
    try {
-      const user = await UserModel.findOne({ email });
+      const user = await findUserByEmail(email);
 
       if (user) res.send({ info: 'User already signed up' });
       else {
-         const newUser = new UserModel({ name, email, password });
-         await newUser.save();
+         const newUser = await createUser(email, password);
          res.send(newUser);
          next();
       }
-   } catch {
-      res.status(404);
-      res.send({ error: 'Something went wrong!' });
+   } catch (err) {
+      res.status(404).send({ error: 'Something went wrong!' });
+      next(err);
    }
 }
 
