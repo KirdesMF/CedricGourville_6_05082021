@@ -3,11 +3,9 @@ import express, {
    Response,
    NextFunction,
    ErrorRequestHandler,
+   Express,
 } from 'express';
-import config from '../config/config';
 import { Route } from '../api/routes/routes';
-
-const { port, host } = config;
 
 function handleErrors(
    err: ErrorRequestHandler,
@@ -33,9 +31,7 @@ function setHeaders(req: Request, res: Response, next: NextFunction) {
    next();
 }
 
-export function ExpressLoader() {
-   const app = express();
-
+export async function ExpressLoader(app: Express) {
    app.use(express.json());
    app.use(express.urlencoded({ extended: true }));
    app.use(setHeaders);

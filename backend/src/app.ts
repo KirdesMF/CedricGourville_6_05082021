@@ -9,7 +9,7 @@ const app = express();
 
 async function startServer() {
    await MongooseLoader();
-   ExpressLoader();
+   await ExpressLoader(app);
 
    app.listen(port, () => console.log(`🔥 API hosted: http://${host}:${port}`));
 }
