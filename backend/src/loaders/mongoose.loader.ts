@@ -13,9 +13,11 @@ const message =
 
 export async function MongooseLoader() {
    try {
-      const connect = mongoose.connect(config.db, mongooseOptions);
-      console.log(message);
-      return connect;
+      if (process.env.NODE_ENV !== 'test') {
+         const connect = mongoose.connect(config.db, mongooseOptions);
+         console.log(message);
+         return connect;
+      }
    } catch (err) {
       console.log(err);
    }

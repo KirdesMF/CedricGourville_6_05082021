@@ -3,18 +3,22 @@
       "clear:cache": "rm -rf src/.cache",
       "start:mongo": "mongod",
       "start:ts": "rm -rf src/.cache && ts-node-dev --transpile-only --cache-directory src/.cache src/app.ts --watch",
-      "start:dev": "concurrently \"npm run start:mongo \" \"sleep 3 && npm run start:ts \"",
+      "start:dev": "npm run start:ts",
       "start:prod": "rm -rf dist && tsc && NODE_ENV=production node dist/app.js"
    },
    "dependencies": {
       "concurrently": "^6.2.1",
       "dotenv": "^10.0.0",
       "express": "^4.17.1",
-      "mongoose": "^5.13.5"
+      "jsonwebtoken": "^8.5.1",
+      "mongoose": "^5.13.5",
+      "multer": "^1.4.3"
    },
    "devDependencies": {
       "@types/express": "^4.17.13",
       "@types/node": "^16.4.12",
+      "@types/jsonwebtoken": "^8.5.4",
+      "@types/multer": "^1.4.7",
       "@typescript-eslint/eslint-plugin": "^4.29.0",
       "@typescript-eslint/parser": "^4.29.0",
       "eslint": "^7.32.0",
@@ -22,6 +26,9 @@
       "eslint-plugin-import": "^2.23.4",
       "eslint-plugin-node": "^11.1.0",
       "eslint-plugin-promise": "^5.1.0",
+      "jest": "^27.0.6",
+      "mongodb-memory-server": "^7.3.5",
+      "supertest": "^6.1.4",
       "ts-node": "^10.1.0",
       "ts-node-dev": "^1.1.8",
       "typescript": "^4.3.5"
