@@ -4,10 +4,8 @@ import express, {
    NextFunction,
    ErrorRequestHandler,
 } from 'express';
-import config from '@config/config';
-
-import authRouter from '@api/routes/auth.routes';
-import saucesRouter from '@api/routes/sauces.routes';
+import config from '../config/config';
+import { Route } from '../api/routes/routes';
 
 const { port, host } = config;
 
@@ -19,7 +17,7 @@ function handleErrors(
 ) {
    res.status(500);
    res.json({ error: err });
-   next();
+   next(err);
 }
 
 function setHeaders(req: Request, res: Response, next: NextFunction) {
@@ -42,10 +40,9 @@ export function ExpressLoader() {
    app.use(express.urlencoded({ extended: true }));
    app.use(setHeaders);
 
-   app.use('/api', authRouter);
-   app.use('/api', saucesRouter);
+   app.use('/api', Route());
 
    app.use(handleErrors);
 
-   app.listen(port, () => console.log(`API hosted: http://${host}:${port}`));
+   app.listen(port, () => console.log(`🔥 API hosted: http://${host}:${port}`));
 }

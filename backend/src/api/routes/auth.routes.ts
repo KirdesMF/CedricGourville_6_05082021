@@ -1,9 +1,13 @@
-import { auth } from '@api/controllers/auth.controller';
-import express from 'express';
+import { auth } from '../../api/controllers/auth.controller';
+import express, { Router } from 'express';
 
-const authRouter = express.Router();
+const route = express.Router();
 
-authRouter.post('/auth/signup', auth.signup);
-authRouter.post('/auth/login', auth.login);
+export function authRouter(app: Router) {
+   app.use('/auth', route);
 
-export default authRouter;
+   route.post('/signup', auth.signup);
+   route.post('/login', auth.login);
+
+   return app;
+}

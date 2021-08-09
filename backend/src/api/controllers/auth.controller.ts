@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserModel } from '@models/auth.model';
+import { UserModel } from '../../models/auth.model';
 
 async function signup(req: Request, res: Response, next: NextFunction) {
    // const email = req.body.email;

@@ -1,15 +1,19 @@
-import express from 'express';
-import { sauces } from 'api/controllers/sauces.controller';
+import { Router } from 'express';
+import { sauces } from '../../api/controllers/sauces.controller';
 
-const saucesRouter = express.Router();
+const route = Router();
 
-saucesRouter.get('/sauces', sauces.getAllSauces);
-saucesRouter.post('/sauces', sauces.postSauce);
+export function saucesRouter(app: Router) {
+   app.use('/sauces', route);
 
-saucesRouter.get('sauces/:id', sauces.getSauce);
-saucesRouter.put('/sauces/:id', sauces.updateSauce);
-saucesRouter.delete('/sauces/:id', sauces.deleteSauce);
+   route.get('/', sauces.getAllSauces);
+   route.post('/', sauces.postSauce);
 
-saucesRouter.post('/sauces/:id/like', sauces.likeSauce);
+   route.get('/:id', sauces.getSauce);
+   route.put('/:id', sauces.updateSauce);
+   route.delete('/:id', sauces.deleteSauce);
 
-export default saucesRouter;
+   route.post('/:id/like', sauces.likeSauce);
+
+   return app;
+}
