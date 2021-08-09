@@ -44,5 +44,5 @@ export function ExpressLoader() {
 
    app.use(handleErrors);
 
-   app.listen(port, () => console.log(`🔥 API hosted: http://${host}:${port}`));
+   return app;
 }
