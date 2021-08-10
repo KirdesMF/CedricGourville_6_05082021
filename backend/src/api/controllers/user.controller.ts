@@ -1,7 +1,8 @@
+import { User } from '../../models/user.model';
 import { UserServices } from '../../services/user.services';
 import { MiddlewareType } from '../../types';
 
-const signup: MiddlewareType = async (req, res, next) => {
+const signup: MiddlewareType<User> = async (req, res, next) => {
    const email = req.body.email;
    const password = req.body.password;
 
@@ -20,9 +21,9 @@ const signup: MiddlewareType = async (req, res, next) => {
    }
 };
 
-const login: MiddlewareType = async (req, res, next) => {
-   const email = req.body.email;
-   const password = req.body.password;
+const login: MiddlewareType<User> = async (req, res, next) => {
+   const email = req.body.email as string;
+   const password = req.body.password as string;
 
    try {
       const user = await UserServices.findUserByEmail(email);

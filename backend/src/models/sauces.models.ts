@@ -1,20 +1,31 @@
-const fakeSauce = {
-   userId: '123',
-   name: 'fake',
-   manufacturer: 'fakeManu',
-   description: 'lorem',
-   mainPepper: 'pepper',
-   imageUrl: 'https://picsum.photos/200/300',
-   heat: 2,
-   likes: 12,
-   dislikes: 20,
-   usersLiked: ['123', '245'],
-   usersDislikes: ['589', '789'],
+import { Schema, model } from 'mongoose';
+
+export type Sauce = {
+   userId: string;
+   name: string;
+   manufacturer: string;
+   description: string;
+   mainPepper: string;
+   imageUrl?: string;
+   heat: number;
+   likes?: number;
+   dislikes?: number;
+   usersLikes?: string[];
+   usersDislikes?: string[];
 };
 
-export const fakesSauces = [
-   fakeSauce,
-   { ...fakeSauce, userId: '478', heat: 6 },
-   { ...fakeSauce, userId: '789', heat: 7 },
-   { ...fakeSauce, userId: '742' },
-];
+const sauceSchema = new Schema({
+   userId: { type: String, required: true },
+   name: { type: String, required: true },
+   manufacturer: { type: String, required: true },
+   description: { type: String, required: true },
+   mainPepper: { type: String, required: true },
+   imageUrl: { type: String },
+   heat: { type: Number, required: true },
+   likes: { type: Number },
+   dislikes: { type: Number },
+   usersDislikes: { type: [String] },
+   usersLikes: { type: [String] },
+});
+
+export const SauceModel = model<Sauce>('Sauce', sauceSchema);

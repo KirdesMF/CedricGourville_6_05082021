@@ -6,7 +6,7 @@ const route = Router();
 export function saucesRouter(app: Router) {
    app.use('/sauces', route);
 
-   route.get('/', SaucesController.getAllSauces);
+   route.get('/', SaucesController.listSauces);
    route.post('/', SaucesController.postSauce);
 
    route.get('/:id', SaucesController.getSauce);

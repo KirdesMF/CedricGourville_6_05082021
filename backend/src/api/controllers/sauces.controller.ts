@@ -1,21 +1,31 @@
 import { Request, Response, NextFunction } from 'express';
-import { fakesSauces } from '../../models/sauces.models';
+import { SaucesService } from '../../services/sauces.services';
 
-async function getAllSauces(req: Request, res: Response, next: NextFunction) {
-   res.send(fakesSauces);
+// TODO move function to services
+async function listSauces(req: Request, res: Response, next: NextFunction) {
+   const sauces = await SaucesService.getAllSauces();
+   res.send(sauces || []);
 }
 
 async function postSauce(req: Request, res: Response, next: NextFunction) {
-   // const sauce = req.body.sauce;
-   // const image = req.body.image;
+   const sauce = await SaucesService.createSauce({
+      userId: '',
+      name: req.body.name,
+      manufacturer: req.body.manufacturer,
+      description: req.body.description,
+      mainPepper: req.body.mainPepper,
+      imageUrl: 'https://picsum.photos/200/300',
+      heat: req.body.heat,
+   });
 
-   res.json({ message: 'Image send to server 🎉' });
+   res.status(201).send(sauce);
+   next();
 }
 
 async function getSauce(req: Request, res: Response, next: NextFunction) {
    // const id = req.body.id;
 
-   res.json(fakesSauces[1]);
+   res.json({});
 }
 
 async function updateSauce(req: Request, res: Response, next: NextFunction) {
@@ -31,7 +41,7 @@ async function likeSauce(req: Request, res: Response, next: NextFunction) {
 }
 
 export const SaucesController = {
-   getAllSauces,
+   listSauces,
    postSauce,
    getSauce,
    updateSauce,
