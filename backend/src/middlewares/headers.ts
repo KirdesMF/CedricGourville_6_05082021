@@ -1,6 +1,7 @@
+import { User } from '../models/user.model';
 import { MiddlewareType } from '../types';
 
-export const setHeaders: MiddlewareType = (req, res, next) => {
+export const setHeaders: MiddlewareType<User> = (req, res, next) => {
    res.setHeader('Access-Control-Allow-Origin', '*');
    res.setHeader(
       'Access-Control-Allow-Headers',

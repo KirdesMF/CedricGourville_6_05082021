@@ -1,10 +1,17 @@
 import { UserModel } from '../models/user.model';
 
 export async function createUser(email: string, password: string) {
-   const model = new UserModel({ email, password });
-   // TODO handle error
-   const user = model.save();
-   return user;
+   try {
+      const model = await UserModel.create({
+         email: email,
+         password: password,
+      });
+      await model.save();
+
+      return model;
+   } catch (err) {
+      console.log(err);
+   }
 }
 
 export async function findUserByEmail(email: string) {

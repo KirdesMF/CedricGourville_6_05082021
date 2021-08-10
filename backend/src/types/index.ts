@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import { Document } from 'mongoose';
 
-export type MiddlewareType<T> = (
+export type MiddlewareType<T = void> = (
    req: Request,
    res: Response,
    next: NextFunction
-) => Promise<(T | (T[] & Document)) | undefined | void> | T;
+) => Promise<T[] & Document> | any;
 
 export type ErrorType = (
    err: ErrorRequestHandler,

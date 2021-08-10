@@ -28,4 +28,6 @@ const config = {
    test,
 };
 
+export const SECRET = process.env.TOKEN_SECRET || 'secret';
+
 export default config[env as keyof typeof config];
