@@ -2,10 +2,8 @@ import { UserModel } from '../models/user.model';
 
 export async function createUser(email: string, password: string) {
    const model = new UserModel({ email, password });
-   const user = model.save((err) => {
-      // TODO improve handles error
-      throw err;
-   });
+   // TODO handle error
+   const user = model.save();
    return user;
 }
 
