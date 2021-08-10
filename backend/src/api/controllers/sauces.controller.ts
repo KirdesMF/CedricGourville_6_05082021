@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { httpStatus } from '../../http-status/status';
 import { SaucesService } from '../../services/sauces.services';
 
 // TODO move function to services
@@ -18,7 +19,7 @@ async function postSauce(req: Request, res: Response, next: NextFunction) {
       heat: req.body.heat,
    });
 
-   res.status(201).send(sauce);
+   res.status(httpStatus.OK).send(sauce);
    next();
 }
 
