@@ -30,7 +30,7 @@ async function likeSauce(req: Request, res: Response, next: NextFunction) {
    res.json({ message: 'Sauce successfully liked' });
 }
 
-export const sauces = {
+export const SaucesController = {
    getAllSauces,
    postSauce,
    getSauce,

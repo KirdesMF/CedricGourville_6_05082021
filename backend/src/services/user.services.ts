@@ -1,8 +1,8 @@
-import { UserModel } from '../models/auth.model';
+import { UserModel } from '../models/user.model';
 
 export async function createUser(email: string, password: string) {
    const model = new UserModel({ email, password });
-   const user = await model.save((err) => {
+   const user = model.save((err) => {
       // TODO improve handles error
       throw err;
    });
@@ -24,3 +24,9 @@ export async function findUserById(id: string) {
       console.log(err);
    }
 }
+
+export const UserServices = {
+   createUser,
+   findUserByEmail,
+   findUserById,
+};

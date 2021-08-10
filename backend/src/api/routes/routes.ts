@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import { authRouter } from './auth.routes';
+import { userRouter } from './user.routes';
 import { saucesRouter } from './sauces.routes';
 
 export function Route() {
    const app = Router();
 
-   authRouter(app);
+   userRouter(app);
    saucesRouter(app);
 
    return app;

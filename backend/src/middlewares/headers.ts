@@ -1,8 +1,6 @@
 import { MiddlewareType } from '../types';
 
-export function setHeaders(params: Omit<MiddlewareType, 'err'>) {
-   const { res, next } = params;
-
+export const setHeaders: MiddlewareType = (req, res, next) => {
    res.setHeader('Access-Control-Allow-Origin', '*');
    res.setHeader(
       'Access-Control-Allow-Headers',
@@ -13,4 +11,4 @@ export function setHeaders(params: Omit<MiddlewareType, 'err'>) {
       'GET, POST, PUT, DELETE, PATCH, OPTIONS'
    );
    next();
-}
+};

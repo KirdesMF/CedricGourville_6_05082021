@@ -1,11 +1,9 @@
-import { MiddlewareType } from '../types';
+import { ErrorType } from '../types';
 
-export function errorLogger(params: MiddlewareType) {
-   const { err } = params;
+export const errorLogger: ErrorType = (err, req, res, next) => {
    console.log(err);
-}
+};
 
-export function errorServer(params: MiddlewareType) {
-   const { err, res } = params;
+export const errorServer: ErrorType = (err, req, res, next) => {
    res.status(500).json({ error: err });
-}
+};
