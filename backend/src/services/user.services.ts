@@ -1,6 +1,6 @@
 import { UserModel } from '../models/user.model';
 
-export async function createUser(email: string, password: string) {
+async function createUser(email: string, password: string) {
    try {
       const model = await UserModel.create({
          email: email,
@@ -14,7 +14,7 @@ export async function createUser(email: string, password: string) {
    }
 }
 
-export async function findUserByEmail(email: string) {
+async function findUserByEmail(email: string) {
    try {
       return await UserModel.findOne({ email });
    } catch (err) {
@@ -22,7 +22,7 @@ export async function findUserByEmail(email: string) {
    }
 }
 
-export async function findUserById(id: string) {
+async function findUserById(id: string) {
    try {
       return await UserModel.findById(id);
    } catch (err) {

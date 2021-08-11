@@ -2,12 +2,15 @@ import multer from 'multer';
 
 const storage = multer.diskStorage({
    destination: function (req, file, cb) {
-      cb(null, '/tmp/my-uploads');
+      cb(null, 'images');
    },
    filename: function (req, file, cb) {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-      cb(null, file.fieldname + '-' + uniqueSuffix);
+      const name = file.originalname.split('.')[0];
+      const extension = file.mimetype.split('/')[1];
+      const fileName = `${name}-${Date.now()}.${extension}`;
+
+      cb(null, fileName);
    },
 });
 
-export const uploadMulter = multer({ storage: storage });
+export const uploadMulter = multer({ storage }).single('image');

@@ -18,9 +18,6 @@ const signup: MiddlewareType<User> = async (req, res, next) => {
          res.status(httpStatus.OK).send({ message: '✔ User created' });
       }
    } catch (err) {
-      res.status(httpStatus.serverError).send({
-         error: '❌ Something went wrong!',
-      });
       next(err);
    }
 };
@@ -54,9 +51,6 @@ const login: MiddlewareType = async (req, res, next) => {
          next();
       }
    } catch (err) {
-      res.status(httpStatus.serverError).send({
-         error: '❌ Something went wrong!',
-      });
       next(err);
    }
 };
