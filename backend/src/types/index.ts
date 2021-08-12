@@ -12,4 +12,4 @@ export type ErrorType = (
    req: Request,
    res: Response,
    next: NextFunction
-) => Promise<void> | void;
+) => Response | void;

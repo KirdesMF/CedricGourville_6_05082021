@@ -1,9 +1,10 @@
 import { ErrorType } from '../types';
 
 export const errorLogger: ErrorType = (err, req, res, next) => {
-   console.log(err);
+   console.error(err);
+   next(err);
 };
 
 export const errorServer: ErrorType = (err, req, res, next) => {
-   res.status(500).json({ error: err });
+   return res.status(500).send(err);
 };
