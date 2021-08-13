@@ -18,7 +18,7 @@ async function getSauce(req: Request, res: Response, next: NextFunction) {
 
 // POST
 async function postSauce(req: Request, res: Response, next: NextFunction) {
-   const bodySauce = req.body.sauce as Sauce;
+   const bodySauce = req.body as Sauce;
    const imageUrl = `${req.protocol}://${req.get('host')}/images/${
       req.file?.filename
    }`;
@@ -36,30 +36,32 @@ async function postSauce(req: Request, res: Response, next: NextFunction) {
 
 // PUT
 async function updateSauce(req: Request, res: Response, next: NextFunction) {
-   const sauceId = req.params.id;
-
    try {
-      if (!req.body.sauce) {
-         await SaucesService.findSauceAndUpdate(sauceId, {
-            ...req.body,
-         });
-
-         return res.status(httpStatus.OK).json({ message: '✔ Updated' });
-      }
-
+      const sauceId = req.params.id;
       const oldSauce = (await SaucesService.findSauceById(sauceId)) as Sauce;
       const oldImageUrl = oldSauce.imageUrl as string;
       const imageUrl = `${req.protocol}://${req.get('host')}/images/${
          req.file?.filename
       }`;
 
+      if (!req.file) {
+         await SaucesService.findSauceAndUpdate(sauceId, {
+            ...(req.body as Sauce),
+         });
+         return res.status(httpStatus.OK).json({
+            message: '✔ Sauce Updated',
+         });
+      }
+
       await SaucesService.findSauceAndUpdate(sauceId, {
-         ...(req.body.sauce as Sauce),
+         ...(req.body as Sauce),
          imageUrl,
       });
 
       return deleteImageFromDisk(oldImageUrl, () => {
-         res.status(httpStatus.OK).json({ message: '✔  Old images removed' });
+         res.status(httpStatus.OK).json({
+            message: '✔  Old images removed and Sauce updated',
+         });
       });
    } catch (err) {
       next(err);

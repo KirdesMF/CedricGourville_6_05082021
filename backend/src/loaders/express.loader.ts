@@ -2,7 +2,7 @@ import express, { Express } from 'express';
 import helmet from 'helmet';
 import path from 'node:path';
 import { Route } from '../api/routes/routes';
-import { errorLogger } from '../middlewares/errors';
+import { errorLogger, errorServer } from '../middlewares/errors';
 import { setHeaders } from '../middlewares/headers';
 
 export function ExpressLoader(app: Express) {
@@ -14,7 +14,7 @@ export function ExpressLoader(app: Express) {
    app.use('/api', Route());
 
    app.use(errorLogger);
-   // app.use(errorServer);
+   app.use(errorServer);
 
    return app;
 }

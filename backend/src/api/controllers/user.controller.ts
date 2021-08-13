@@ -12,11 +12,10 @@ const signup: MiddlewareType<User> = async (req, res, next) => {
 
    try {
       const hashedPassword = await bcrypt.hash(password, 10);
-      const hashedEmail = await bcrypt.hash(email, 10);
       const user = await UserServices.createUser(email, hashedPassword);
 
       if (user) {
-         res.status(httpStatus.OK).send({ message: '✔ User created' });
+         res.status(httpStatus.OK).json({ message: '✔ User created' });
       }
    } catch (err) {
       next(err);

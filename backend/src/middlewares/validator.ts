@@ -1,56 +1,106 @@
 import { NextFunction, Request, Response } from 'express';
-import { Schema } from 'express-validator';
+import { Schema, validationResult } from 'express-validator';
 import fs from 'fs';
+import { httpStatus } from '../http-status/status';
 
-export const loginSchemaValidator: Schema = {
+export const userValidatorSchema: Schema = {
    email: {
-      isEmail: true,
+      in: 'body',
       notEmpty: true,
-      errorMessage: '❌ Please provide an email',
+      normalizeEmail: true,
+      isEmail: {
+         bail: true,
+      },
+      errorMessage: '❌ Invalid email',
    },
    password: {
-      notEmpty: true,
+      in: 'body',
       isLength: {
-         options: { min: 8 },
-         errorMessage: '❌ Password should contain at least 8 characters',
+         errorMessage:
+            '❌ Please provide a strong password at least 6 characters',
+         options: {
+            min: 6,
+         },
       },
    },
 };
 
-export const validateInput = (
+export const sauceValidatorSchema: Schema = {
+   name: {
+      in: 'body',
+      notEmpty: true,
+      isLength: {
+         errorMessage: '❌ Name should at least contain 2 characters',
+         options: {
+            min: 2,
+         },
+      },
+   },
+   manufacturer: {
+      in: 'body',
+      notEmpty: true,
+      isLength: {
+         errorMessage: '❌ Manufacturer should at least contain 2 characters',
+         options: {
+            min: 2,
+         },
+      },
+   },
+   description: {
+      in: 'body',
+      notEmpty: true,
+      isLength: {
+         errorMessage:
+            '❌ Description should at least contain 2 characters and less than 60 characters',
+         options: {
+            min: 2,
+            max: 60,
+         },
+      },
+   },
+   mainPepper: {
+      in: 'body',
+      notEmpty: true,
+      isLength: {
+         errorMessage: '❌ Main Pepper should at least contain 2 characters',
+         options: {
+            min: 2,
+         },
+      },
+   },
+};
+
+export const validateInputLog = (
    req: Request,
    res: Response,
    next: NextFunction
 ) => {
-   try {
-      if (req.body.sauce) {
-         checkInputs(req.body.sauce);
-         return next();
-      }
-
-      checkInputs(req.body);
-      next();
-   } catch (err) {
-      if (req.body.sauce) {
-         fs.unlink(req.file!.path, (err) => {
-            if (err) return err;
-            console.log('✔ Succesfully deleted');
-         });
-      }
-
-      res.status(400).send(err);
+   const errors = validationResult(req);
+   if (!errors.isEmpty()) {
+      return res.status(httpStatus.badRequest).json({
+         errors: errors.throw(),
+      });
    }
-};
-
-export const parseSauce = (req: Request, res: Response, next: NextFunction) => {
-   if (!req.body.sauce) return next();
-   req.body.sauce = JSON.parse(req.body.sauce);
    next();
 };
 
-// TODO improve checking inputs
-export const checkInputs = (obj: Record<string, string>) => {
-   if (obj.name.length <= 1) {
-      throw new Error('error name');
+export const validateInputSauce = (
+   req: Request,
+   res: Response,
+   next: NextFunction
+) => {
+   const errors = validationResult(req);
+   if (!errors.isEmpty()) {
+      if (req.file) {
+         fs.unlink(req.file.path, (err) => {
+            if (err) console.log(err);
+            console.log('✔ Succesfully deleted');
+         });
+      }
+      return res.status(httpStatus.badRequest).json({
+         errors: errors.throw(),
+         message: 'Something is going wrong',
+      });
    }
+   next();
 };

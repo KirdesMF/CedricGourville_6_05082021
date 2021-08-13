@@ -1,8 +1,13 @@
 import { Router } from 'express';
+import { checkSchema } from 'express-validator';
 import { SaucesController } from '../../api/controllers/sauces.controller';
 import { isAuthenticated } from '../../middlewares/isAuth';
 import { uploadMulter } from '../../middlewares/multer';
-import { parseSauce, validateInput } from '../../middlewares/validator';
+import { parseSauce } from '../../middlewares/parse';
+import {
+   sauceValidatorSchema,
+   validateInputSauce,
+} from '../../middlewares/validator';
 
 const route = Router();
 
@@ -16,7 +21,8 @@ export function saucesRouter(app: Router) {
          isAuthenticated,
          uploadMulter,
          parseSauce,
-         validateInput,
+         checkSchema(sauceValidatorSchema),
+         validateInputSauce,
          SaucesController.postSauce
       );
 
@@ -28,16 +34,12 @@ export function saucesRouter(app: Router) {
          isAuthenticated,
          uploadMulter,
          parseSauce,
-         validateInput,
+         checkSchema(sauceValidatorSchema),
+         validateInputSauce,
          SaucesController.updateSauce
       );
 
-   route.post(
-      '/:id/like',
-      isAuthenticated,
-      uploadMulter,
-      SaucesController.likeSauce
-   );
+   route.post('/:id/like', isAuthenticated, SaucesController.likeSauce);
 
    return app;
 }
