@@ -12,7 +12,7 @@ async function getAllSauces() {
       const sauces = await SauceModel.find();
       return sauces;
    } catch (err) {
-      throw new ErrorHandler(httpStatus.serverError, err);
+      // throw new ErrorHandler(httpStatus.serverError, err);
    }
 }
 

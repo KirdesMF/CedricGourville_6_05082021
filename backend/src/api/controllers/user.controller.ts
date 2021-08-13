@@ -19,7 +19,7 @@ const signup: MiddlewareType<User> = async (req, res, next) => {
          res.status(httpStatus.OK).json({ message: '✔ User created' });
       }
    } catch (err) {
-      next(err);
+      next(new ErrorHandler(httpStatus.notFound, '❌ Something went wrong'));
    }
 };
 
@@ -31,16 +31,20 @@ const login: MiddlewareType = async (req, res, next) => {
       const user = await UserServices.findUserByEmail(email);
 
       if (!user) {
-         throw new ErrorHandler(
-            httpStatus.notFound,
-            '❌ User is not registred please sign in'
+         return next(
+            new ErrorHandler(
+               httpStatus.notFound,
+               '❌ User is not registred please sign in'
+            )
          );
       } else {
          const isPassword = await bcrypt.compare(password, user.password);
          if (!isPassword) {
-            throw new ErrorHandler(
-               httpStatus.unauthorized,
-               '❌ Wrong password - Mail'
+            return next(
+               new ErrorHandler(
+                  httpStatus.unauthorized,
+                  '❌ Wrong password - Mail'
+               )
             );
          }
 
@@ -53,7 +57,7 @@ const login: MiddlewareType = async (req, res, next) => {
          next();
       }
    } catch (err) {
-      next(err);
+      next(new ErrorHandler(httpStatus.unauthorized, err));
    }
 };
 

@@ -8,7 +8,7 @@ import { ErrorHandler } from '../../utils/error.utils';
 // GET
 async function listSauces(req: Request, res: Response, next: NextFunction) {
    const sauces = await SaucesService.getAllSauces().catch(next);
-   return res.status(httpStatus.OK).send(sauces);
+   res.status(httpStatus.OK).json(sauces);
 }
 
 // GET
@@ -27,9 +27,7 @@ async function postSauce(req: Request, res: Response, next: NextFunction) {
    const sauce = await SaucesService.createSauce({
       ...bodySauce,
       imageUrl,
-   }).catch((err) => {
-      next(err);
-   });
+   }).catch(next);
 
    res.status(httpStatus.OK).json({ message: 'Success' });
    return sauce;

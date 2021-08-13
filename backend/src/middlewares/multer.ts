@@ -14,7 +14,6 @@ const storage = multer.diskStorage({
    },
 });
 
-// TODO add filter to handle erro image ( size , format ...)
 export const uploadMulter = multer({
    storage: storage,
    limits: { fileSize: 2e6 },
