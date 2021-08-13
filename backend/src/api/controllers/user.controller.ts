@@ -12,6 +12,7 @@ const signup: MiddlewareType<User> = async (req, res, next) => {
 
    try {
       const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedEmail = await bcrypt.hash(email, 10);
       const user = await UserServices.createUser(email, hashedPassword);
 
       if (user) {
@@ -35,11 +36,11 @@ const login: MiddlewareType = async (req, res, next) => {
          });
       } else {
          const isPassword = await bcrypt.compare(password, user.password);
-
+         // const isEmail = await bcrypt.compare(email, user.email);
          if (!isPassword) {
             return res
                .status(httpStatus.unauthorized)
-               .send({ error: '❌ Wrong password' });
+               .send({ error: '❌ Wrong password - Mail' });
          }
 
          res.status(httpStatus.OK).json({

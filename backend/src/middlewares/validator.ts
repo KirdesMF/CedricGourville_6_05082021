@@ -17,15 +17,6 @@ export const loginSchemaValidator: Schema = {
    },
 };
 
-export const sauceValidatorMulter: Schema = {
-   'sauce.name': {
-      isLength: {
-         options: { min: 2 },
-      },
-      errorMessage: '❌ Please provide an email',
-   },
-};
-
 export const validateInput = (
    req: Request,
    res: Response,

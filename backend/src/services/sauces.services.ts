@@ -1,4 +1,8 @@
-import { QueryFindOneAndUpdateOptions } from 'mongoose';
+import {
+   FilterQuery,
+   QueryFindOneAndUpdateOptions,
+   UpdateQuery,
+} from 'mongoose';
 import { Sauce, SauceModel } from '../models/sauces.models';
 
 async function getAllSauces() {
@@ -55,10 +59,23 @@ async function findSauceAndUpdate(sauceId: string, update: Partial<Sauce>) {
    }
 }
 
+async function updateOneSauce(
+   filter: FilterQuery<Sauce>,
+   update: UpdateQuery<Sauce> | Partial<Sauce>
+) {
+   try {
+      const model = await SauceModel.updateOne(filter, update);
+      return model;
+   } catch (err) {
+      console.log(err);
+   }
+}
+
 export const SaucesService = {
    getAllSauces,
    createSauce,
    findSauceById,
    findSauceAndDelete,
    findSauceAndUpdate,
+   updateOneSauce,
 };

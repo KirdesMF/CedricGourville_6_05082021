@@ -7,7 +7,7 @@ import { deleteImageFromDisk, getUserIdFromToken } from '../../utils';
 // GET
 async function listSauces(req: Request, res: Response, next: NextFunction) {
    const sauces = await SaucesService.getAllSauces().catch(next);
-   return res.json(sauces);
+   return res.status(httpStatus.OK).send(sauces);
 }
 
 // GET
@@ -30,7 +30,8 @@ async function postSauce(req: Request, res: Response, next: NextFunction) {
       next(err);
    });
 
-   return res.status(httpStatus.OK).json(sauce);
+   res.status(httpStatus.OK).json({ message: 'Success' });
+   return sauce;
 }
 
 // PUT
@@ -39,11 +40,11 @@ async function updateSauce(req: Request, res: Response, next: NextFunction) {
 
    try {
       if (!req.body.sauce) {
-         const sauce = await SaucesService.findSauceAndUpdate(sauceId, {
+         await SaucesService.findSauceAndUpdate(sauceId, {
             ...req.body,
          });
 
-         return res.status(httpStatus.OK).json(sauce);
+         return res.status(httpStatus.OK).json({ message: '✔ Updated' });
       }
 
       const oldSauce = (await SaucesService.findSauceById(sauceId)) as Sauce;
@@ -52,13 +53,13 @@ async function updateSauce(req: Request, res: Response, next: NextFunction) {
          req.file?.filename
       }`;
 
-      const sauce = await SaucesService.findSauceAndUpdate(sauceId, {
+      await SaucesService.findSauceAndUpdate(sauceId, {
          ...(req.body.sauce as Sauce),
          imageUrl,
       });
 
       return deleteImageFromDisk(oldImageUrl, () => {
-         res.status(httpStatus.OK).json(sauce);
+         res.status(httpStatus.OK).json({ message: '✔  Old images removed' });
       });
    } catch (err) {
       next(err);
@@ -76,8 +77,10 @@ async function deleteSauce(req: Request, res: Response, next: NextFunction) {
       const imageUrl = sauce?.imageUrl as string;
 
       if (userIdSauce !== userId) {
-         res.status(httpStatus.unauthorized);
-         throw new Error('🚨 Not Authorized 🚨');
+         res.status(httpStatus.unauthorized).json({
+            error: '❌ You cant delete this sauce',
+         });
+         next('🚨 Not Authorized 🚨');
       }
 
       deleteImageFromDisk(imageUrl, async () => {
@@ -93,7 +96,88 @@ async function deleteSauce(req: Request, res: Response, next: NextFunction) {
 
 // PUT
 async function likeSauce(req: Request, res: Response, next: NextFunction) {
-   res.json({ message: 'Sauce successfully liked' });
+   const userId = req.body.userId as string;
+   const count = req.body.like as number;
+   const sauceId = req.params.id;
+   const sauce = await SaucesService.findSauceById(sauceId);
+
+   const hasLiked = sauce?.usersLiked?.includes(userId);
+   const hasDisliked = sauce?.usersDisliked?.includes(userId);
+
+   // if like
+   if (count === 1 && !hasLiked) {
+      await SaucesService.updateOneSauce(
+         { _id: sauceId },
+         {
+            $push: {
+               usersLiked: userId,
+            },
+            $inc: {
+               likes: +1,
+            },
+         }
+      )
+         .then(() => res.status(httpStatus.OK).json({ message: 'Liked' }))
+         .catch(() =>
+            res.status(httpStatus.badRequest).json({ message: 'Already liked' })
+         );
+   }
+
+   // if dislike
+   if (count === -1 && !hasDisliked) {
+      await SaucesService.updateOneSauce(
+         { _id: sauceId },
+         {
+            $push: {
+               usersDisliked: userId,
+            },
+            $inc: {
+               dislikes: +1,
+            },
+         }
+      )
+         .then(() => res.status(httpStatus.OK).json({ message: 'Disliked' }))
+         .catch(() =>
+            res
+               .status(httpStatus.badRequest)
+               .json({ message: 'Already disliked' })
+         );
+   }
+
+   // remove like - dislike
+   if (count === 0) {
+      if (hasLiked) {
+         await SaucesService.updateOneSauce(
+            { _id: sauceId },
+            {
+               $pull: {
+                  usersLiked: userId,
+               },
+               $inc: {
+                  likes: -1,
+               },
+            }
+         ).then(() =>
+            res.status(httpStatus.OK).json({ message: 'like remove' })
+         );
+      }
+
+      if (hasDisliked) {
+         await SaucesService.updateOneSauce(
+            { _id: sauceId },
+            {
+               $pull: {
+                  usersDisliked: userId,
+               },
+               $inc: {
+                  dislikes: -1,
+               },
+            }
+         ).then(() =>
+            res.status(httpStatus.OK).json({ message: 'Dislike remove' })
+         );
+      }
+   }
 }
 
 export const SaucesController = {

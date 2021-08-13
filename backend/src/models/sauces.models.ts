@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 
 export type Sauce = {
+   _id: string;
    userId: string;
    name: string;
    manufacturer: string;
@@ -10,8 +11,8 @@ export type Sauce = {
    heat: number;
    likes?: number;
    dislikes?: number;
-   usersLikes?: string[] | [];
-   usersDislikes?: string[] | [];
+   usersLiked?: string[];
+   usersDisliked?: string[];
 };
 
 const sauceSchema = new Schema({
@@ -24,8 +25,8 @@ const sauceSchema = new Schema({
    heat: { type: Number, required: true },
    likes: { type: Number, default: 0 },
    dislikes: { type: Number, default: 0 },
-   usersDislikes: { type: [String], default: [] },
-   usersLikes: { type: [String], default: [] },
+   usersDisliked: [String],
+   usersLiked: [String],
 });
 
 export const SauceModel = model<Sauce>('Sauce', sauceSchema);
