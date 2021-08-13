@@ -5,6 +5,7 @@ import { SECRET } from '../../config/config';
 import { User } from '../../models/user.model';
 import { UserServices } from '../../services/user.services';
 import { MiddlewareType } from '../../types';
+import { ErrorHandler } from '../../utils/error.utils';
 
 const signup: MiddlewareType<User> = async (req, res, next) => {
    const email = req.body.email;
@@ -30,16 +31,17 @@ const login: MiddlewareType = async (req, res, next) => {
       const user = await UserServices.findUserByEmail(email);
 
       if (!user) {
-         res.status(httpStatus.notFound).json({
-            error: '❌ User is not registred please sign in',
-         });
+         throw new ErrorHandler(
+            httpStatus.notFound,
+            '❌ User is not registred please sign in'
+         );
       } else {
          const isPassword = await bcrypt.compare(password, user.password);
-         // const isEmail = await bcrypt.compare(email, user.email);
          if (!isPassword) {
-            return res
-               .status(httpStatus.unauthorized)
-               .send({ error: '❌ Wrong password - Mail' });
+            throw new ErrorHandler(
+               httpStatus.unauthorized,
+               '❌ Wrong password - Mail'
+            );
          }
 
          res.status(httpStatus.OK).json({

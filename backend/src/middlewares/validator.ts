@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { Schema, validationResult } from 'express-validator';
 import fs from 'fs';
 import { httpStatus } from '../http-status/status';
+import { ErrorHandler } from '../utils/error.utils';
 
 export const userValidatorSchema: Schema = {
    email: {
@@ -97,10 +98,14 @@ export const validateInputSauce = (
             console.log('✔ Succesfully deleted');
          });
       }
-      return res.status(httpStatus.badRequest).json({
-         errors: errors.throw(),
-         message: 'Something is going wrong',
-      });
+
+      next(
+         new ErrorHandler(
+            httpStatus.badRequest,
+            '❌ Something is going wrong',
+            errors.array()
+         )
+      );
    }
    next();
 };

@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
-import { validateEmail } from '../utils';
 
 export type User = {
    email: string;
@@ -12,12 +11,10 @@ const userSchema = new Schema<User>({
       type: String,
       required: true,
       unique: true,
-      validate: [validateEmail, 'Please enter a valid email'],
    },
    password: {
       type: String,
       required: true,
-      minLength: [6, 'Must be at least 6 characters long, got {VALUE}'],
    },
 });
 

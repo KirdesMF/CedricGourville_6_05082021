@@ -3,14 +3,16 @@ import {
    QueryFindOneAndUpdateOptions,
    UpdateQuery,
 } from 'mongoose';
+import { httpStatus } from '../http-status/status';
 import { Sauce, SauceModel } from '../models/sauces.models';
+import { ErrorHandler } from '../utils/error.utils';
 
 async function getAllSauces() {
    try {
       const sauces = await SauceModel.find();
       return sauces;
    } catch (err) {
-      console.log(err);
+      throw new ErrorHandler(httpStatus.serverError, err);
    }
 }
 
@@ -20,7 +22,7 @@ async function createSauce(params: Sauce) {
       const saved = await model.save();
       return saved;
    } catch (err) {
-      console.log(err);
+      throw new ErrorHandler(httpStatus.serverError, err);
    }
 }
 
@@ -29,7 +31,7 @@ async function findSauceById(sauceId: string) {
       const sauce = await SauceModel.findById(sauceId);
       return sauce;
    } catch (err) {
-      console.log(err);
+      throw new ErrorHandler(httpStatus.serverError, err);
    }
 }
 
@@ -38,7 +40,7 @@ async function findSauceAndDelete(sauceId: string) {
       const sauce = await SauceModel.deleteOne({ _id: sauceId });
       return sauce;
    } catch (err) {
-      console.log(err);
+      throw new ErrorHandler(httpStatus.serverError, err);
    }
 }
 
@@ -55,7 +57,7 @@ async function findSauceAndUpdate(sauceId: string, update: Partial<Sauce>) {
       );
       return sauce;
    } catch (err) {
-      console.log(err);
+      throw new ErrorHandler(httpStatus.serverError, err);
    }
 }
 
@@ -67,7 +69,7 @@ async function updateOneSauce(
       const model = await SauceModel.updateOne(filter, update);
       return model;
    } catch (err) {
-      console.log(err);
+      throw new ErrorHandler(httpStatus.serverError, err);
    }
 }
 

@@ -3,6 +3,7 @@ import { httpStatus } from '../../http-status/status';
 import { Sauce } from '../../models/sauces.models';
 import { SaucesService } from '../../services/sauces.services';
 import { deleteImageFromDisk, getUserIdFromToken } from '../../utils';
+import { ErrorHandler } from '../../utils/error.utils';
 
 // GET
 async function listSauces(req: Request, res: Response, next: NextFunction) {
@@ -79,10 +80,9 @@ async function deleteSauce(req: Request, res: Response, next: NextFunction) {
       const imageUrl = sauce?.imageUrl as string;
 
       if (userIdSauce !== userId) {
-         res.status(httpStatus.unauthorized).json({
-            error: '❌ You cant delete this sauce',
-         });
-         next('🚨 Not Authorized 🚨');
+         next(
+            new ErrorHandler(httpStatus.unauthorized, '🚨 Not Authorized 🚨')
+         );
       }
 
       deleteImageFromDisk(imageUrl, async () => {
@@ -118,11 +118,11 @@ async function likeSauce(req: Request, res: Response, next: NextFunction) {
                likes: +1,
             },
          }
-      )
-         .then(() => res.status(httpStatus.OK).json({ message: 'Liked' }))
-         .catch(() =>
-            res.status(httpStatus.badRequest).json({ message: 'Already liked' })
-         );
+      ).catch(() =>
+         next(new ErrorHandler(httpStatus.badRequest, '❌ Already liked'))
+      );
+
+      res.status(httpStatus.OK).json({ message: '✔ Liked' });
    }
 
    // if dislike
@@ -137,13 +137,11 @@ async function likeSauce(req: Request, res: Response, next: NextFunction) {
                dislikes: +1,
             },
          }
-      )
-         .then(() => res.status(httpStatus.OK).json({ message: 'Disliked' }))
-         .catch(() =>
-            res
-               .status(httpStatus.badRequest)
-               .json({ message: 'Already disliked' })
-         );
+      ).catch(() =>
+         next(new ErrorHandler(httpStatus.badRequest, '❌ Already disliked'))
+      );
+
+      return res.status(httpStatus.OK).json({ message: '✔ Disliked' });
    }
 
    // remove like - dislike
@@ -159,9 +157,15 @@ async function likeSauce(req: Request, res: Response, next: NextFunction) {
                   likes: -1,
                },
             }
-         ).then(() =>
-            res.status(httpStatus.OK).json({ message: 'like remove' })
+         ).catch(() =>
+            next(
+               new ErrorHandler(
+                  httpStatus.badRequest,
+                  '❌ Something went wrong'
+               )
+            )
          );
+         return res.status(httpStatus.OK).json({ message: '✔ like remove' });
       }
 
       if (hasDisliked) {
@@ -175,9 +179,16 @@ async function likeSauce(req: Request, res: Response, next: NextFunction) {
                   dislikes: -1,
                },
             }
-         ).then(() =>
-            res.status(httpStatus.OK).json({ message: 'Dislike remove' })
+         ).catch(() =>
+            next(
+               new ErrorHandler(
+                  httpStatus.badRequest,
+                  '❌ Something went wrong'
+               )
+            )
          );
+
+         return res.status(httpStatus.OK).json({ message: 'Dislike remove' });
       }
    }
 }
