@@ -18,9 +18,3 @@ export function getUserIdFromToken(req: Request) {
 
    return userId;
 }
-
-export function validateEmail(email: string) {
-   const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
-
-   return regex.test(email);
-}
