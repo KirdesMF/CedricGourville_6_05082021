@@ -1,7 +1,7 @@
-import mongoose, { MongooseOptions } from 'mongoose';
+import mongoose, { ConnectOptions } from 'mongoose';
 import config from '../config/config';
 
-export const mongooseOptions: MongooseOptions = {
+export const mongooseOptions: ConnectOptions = {
    useNewUrlParser: true,
    useUnifiedTopology: true,
    useCreateIndex: true,
@@ -9,11 +9,10 @@ export const mongooseOptions: MongooseOptions = {
 };
 
 const message = '✌ Mongo connected';
-
+const connect = mongoose.connect(config.db, mongooseOptions);
 export async function MongooseLoader() {
    try {
       if (process.env.NODE_ENV !== 'test') {
-         const connect = mongoose.connect(config.db, mongooseOptions);
          console.log(message);
          return connect;
       }

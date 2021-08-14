@@ -29,6 +29,8 @@ export const userValidatorSchema: Schema = {
 export const sauceValidatorSchema: Schema = {
    name: {
       in: 'body',
+      trim: true,
+      escape: true,
       notEmpty: true,
       isLength: {
          errorMessage: '❌ Name should at least contain 2 characters',
@@ -40,6 +42,8 @@ export const sauceValidatorSchema: Schema = {
    manufacturer: {
       in: 'body',
       notEmpty: true,
+      trim: true,
+      escape: true,
       isLength: {
          errorMessage: '❌ Manufacturer should at least contain 2 characters',
          options: {
@@ -50,6 +54,8 @@ export const sauceValidatorSchema: Schema = {
    description: {
       in: 'body',
       notEmpty: true,
+      trim: true,
+      escape: true,
       isLength: {
          errorMessage:
             '❌ Description should at least contain 2 characters and less than 60 characters',
@@ -62,6 +68,8 @@ export const sauceValidatorSchema: Schema = {
    mainPepper: {
       in: 'body',
       notEmpty: true,
+      trim: true,
+      escape: true,
       isLength: {
          errorMessage: '❌ Main Pepper should at least contain 2 characters',
          options: {

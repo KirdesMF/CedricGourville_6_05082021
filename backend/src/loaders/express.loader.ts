@@ -8,12 +8,14 @@ import {
    errorServer,
 } from '../middlewares/errors';
 import { setHeaders } from '../middlewares/headers';
+import { rateLimiterMiddleware } from '../middlewares/rate-limiter';
 
 export function ExpressLoader(app: Application) {
    app.use(helmet());
    app.use(setHeaders);
    app.use(express.json());
    app.use(express.urlencoded({ extended: true }));
+   app.use(rateLimiterMiddleware);
    app.use('/images', express.static(path.join(__dirname, '../../images/')));
    app.use('/api', Route());
 
