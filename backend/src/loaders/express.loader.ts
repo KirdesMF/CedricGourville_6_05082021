@@ -9,13 +9,20 @@ import {
 } from '../middlewares/errors';
 import { setHeaders } from '../middlewares/headers';
 import { rateLimiterMiddleware } from '../middlewares/rate-limiter';
+import hpp from 'hpp';
+
+const requestSizeLimit = '1kb';
 
 export function ExpressLoader(app: Application) {
-   app.use(helmet());
+   app.use(helmet()); // help to set various http headers
    app.use(setHeaders);
-   app.use(express.json());
-   app.use(express.urlencoded({ extended: true }));
-   app.use(rateLimiterMiddleware);
+
+   app.use(express.urlencoded({ extended: true, limit: requestSizeLimit }));
+   app.use(express.json({ limit: requestSizeLimit }));
+
+   app.use(hpp()); // http parameter pollution
+   app.use(rateLimiterMiddleware); // rate limite block force
+
    app.use('/images', express.static(path.join(__dirname, '../../images/')));
    app.use('/api', Route());
 

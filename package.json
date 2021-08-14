@@ -4,7 +4,10 @@
    "description": "OC P6",
    "main": "index.js",
    "scripts": {
-      "start:dev": "concurrently \"cd backend && npm run start:dev\" \"cd frontend && sleep 1 && npm run start:linux:darwin\""
+      "start:dev:linux": "concurrently \"cd backend && npm run start:dev\" \"cd frontend && sleep 1 && npm run start:linux:darwin\"",
+      "start:prod:linux": "concurrently \"cd backend && npm run start:prod\" \"cd frontend && sleep 1 && npm run start:linux:darwin\"",
+      "start:dev:win": "concurrently \"cd backend && npm run start:dev\" \"cd frontend && sleep 1 && npm run start:win32\"",
+      "start:prod:win": "concurrently \"cd backend && npm run start:prod\" \"cd frontend && sleep 1 && npm run start:win32\""
    },
    "repository": {
       "type": "git",
