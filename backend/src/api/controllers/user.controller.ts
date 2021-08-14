@@ -16,7 +16,7 @@ const signup: MiddlewareType<User> = async (req, res, next) => {
       const user = await UserServices.createUser(email, hashedPassword);
 
       if (user) {
-         res.status(httpStatus.OK).json({ message: '✔ User created' });
+         res.status(httpStatus.created).json({ message: '✔ User created' });
       }
    } catch (err) {
       next(new ErrorHandler(httpStatus.notFound, '❌ Something went wrong'));

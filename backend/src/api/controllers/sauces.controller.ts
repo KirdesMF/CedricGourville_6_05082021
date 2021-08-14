@@ -29,7 +29,7 @@ async function postSauce(req: Request, res: Response, next: NextFunction) {
       imageUrl,
    }).catch(next);
 
-   res.status(httpStatus.OK).json({ message: 'Success' });
+   res.status(httpStatus.created).json({ message: 'Success' });
    return sauce;
 }
 
@@ -47,7 +47,7 @@ async function updateSauce(req: Request, res: Response, next: NextFunction) {
          await SaucesService.findSauceAndUpdate(sauceId, {
             ...(req.body as Sauce),
          });
-         return res.status(httpStatus.OK).json({
+         return res.status(httpStatus.created).json({
             message: '✔ Sauce Updated',
          });
       }
@@ -85,7 +85,7 @@ async function deleteSauce(req: Request, res: Response, next: NextFunction) {
 
       deleteImageFromDisk(imageUrl, async () => {
          await SaucesService.findSauceAndDelete(req.params.id);
-         res.status(httpStatus.OK).json({
+         res.status(httpStatus.noContent).json({
             message: '✔ Sauce Deleted!',
          });
       });
