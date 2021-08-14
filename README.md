@@ -22,6 +22,6 @@ The frontend repo comes with `run-script-os` but its not working on my machine (
 -  `npm run start:dev:linux` Start the project in a dev env for linux OS
 -  `npm run start:dev:win` Same but for win OS
 -  `npm run start:prod:linux` prod env for linux OS
--  `npm run start;prod:win` for win OS
+-  `npm run start:prod:win` for win OS
 
 You can also start just the frontend or just the backend. You can check `package.json` inside the `frontend` and `backend` folders.

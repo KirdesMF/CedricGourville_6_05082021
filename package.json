@@ -7,7 +7,8 @@
       "start:dev:linux": "concurrently \"cd backend && npm run start:dev\" \"cd frontend && sleep 1 && npm run start:linux:darwin\"",
       "start:prod:linux": "concurrently \"cd backend && npm run start:prod\" \"cd frontend && sleep 1 && npm run start:linux:darwin\"",
       "start:dev:win": "concurrently \"cd backend && npm run start:dev\" \"cd frontend && sleep 1 && npm run start:win32\"",
-      "start:prod:win": "concurrently \"cd backend && npm run start:prod\" \"cd frontend && sleep 1 && npm run start:win32\""
+      "start:prod:win": "concurrently \"cd backend && npm run start:prod\" \"cd frontend && sleep 1 && npm run start:win32\"",
+      "install:all": "concurrenttly \"cd frontend && npm install\" \"cd backend && npm install\""
    },
    "repository": {
       "type": "git",
