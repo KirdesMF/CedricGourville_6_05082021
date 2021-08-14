@@ -8,10 +8,9 @@ import { MiddlewareType } from '../../types';
 import { ErrorHandler } from '../../utils/error.utils';
 
 const signup: MiddlewareType<User> = async (req, res, next) => {
-   const email = req.body.email;
-   const password = req.body.password;
-
    try {
+      const email = req.body.email;
+      const password = req.body.password;
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = await UserServices.createUser(email, hashedPassword);
 
